@@ -106,6 +106,7 @@ public struct ImageMetadata {
     public var hasVideo = false
     public var cropHeightRatio: CGFloat = 1
     public var allowMultipleSelection: Bool = false
+    public var shouldDismissOnSelectAutomatically = true
 
     fileprivate var mode: FusumaMode = .none
     public var defaultMode: FusumaMode = .library
@@ -362,10 +363,14 @@ public struct ImageMetadata {
                 
                 self.delegate?.fusumaImageSelected(image, source: self.mode)
                 
-                self.dismiss(animated: true, completion: {
-                    
+                if self.shouldDismissOnSelectAutomatically {
+                    self.dismiss(animated: true, completion: {
+                        
+                        self.delegate?.fusumaDismissedWithImage(image, source: self.mode)
+                    })
+                } else {
                     self.delegate?.fusumaDismissedWithImage(image, source: self.mode)
-                })
+                }
                 
                 let metaData = ImageMetadata(
                     mediaType: self.albumView.phAsset.mediaType,
@@ -384,10 +389,12 @@ public struct ImageMetadata {
         } else {
             
             print("no image crop ")
-            delegate?.fusumaImageSelected(view.image, source: mode)
-            
-            self.dismiss(animated: true) {
-            
+            if self.shouldDismissOnSelectAutomatically {
+                self.dismiss(animated: true, completion: {
+                    
+                    self.delegate?.fusumaDismissedWithImage(view.image, source: self.mode)
+                })
+            } else {
                 self.delegate?.fusumaDismissedWithImage(view.image, source: self.mode)
             }
         }
@@ -470,10 +477,12 @@ extension FusumaViewController: FSAlbumViewDelegate, FSCameraViewDelegate, FSVid
     // MARK: FSCameraViewDelegate
     func cameraShotFinished(_ image: UIImage) {
         
-        delegate?.fusumaImageSelected(image, source: mode)
-        
-        self.dismiss(animated: true) {
-            
+        if self.shouldDismissOnSelectAutomatically {
+            self.dismiss(animated: true, completion: {
+                
+                self.delegate?.fusumaDismissedWithImage(image, source: self.mode)
+            })
+        } else {
             self.delegate?.fusumaDismissedWithImage(image, source: self.mode)
         }
     }
