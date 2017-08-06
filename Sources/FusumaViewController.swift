@@ -389,13 +389,12 @@ public struct ImageMetadata {
         } else {
             
             print("no image crop ")
+            delegate?.fusumaImageSelected(view.image, source: mode)
+            
             if self.shouldDismissOnSelectAutomatically {
-                self.dismiss(animated: true, completion: {
-                    
+                self.dismiss(animated: true) {
                     self.delegate?.fusumaDismissedWithImage(view.image, source: self.mode)
-                })
-            } else {
-                self.delegate?.fusumaDismissedWithImage(view.image, source: self.mode)
+                }
             }
         }
     }
@@ -477,13 +476,12 @@ extension FusumaViewController: FSAlbumViewDelegate, FSCameraViewDelegate, FSVid
     // MARK: FSCameraViewDelegate
     func cameraShotFinished(_ image: UIImage) {
         
+        delegate?.fusumaImageSelected(image, source: mode)
+        
         if self.shouldDismissOnSelectAutomatically {
-            self.dismiss(animated: true, completion: {
-                
+            self.dismiss(animated: true) {
                 self.delegate?.fusumaDismissedWithImage(image, source: self.mode)
-            })
-        } else {
-            self.delegate?.fusumaDismissedWithImage(image, source: self.mode)
+            }
         }
     }
     
