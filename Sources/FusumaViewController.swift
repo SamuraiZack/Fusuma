@@ -444,22 +444,30 @@ public struct ImageMetadata {
                               width: normalizedWidth, height: normalizedHeight)
         
         var images = [UIImage]()
-        
+        let selectedAssetsCount = albumView.selectedAssets.count
+        var index = 0
         for asset in albumView.selectedAssets {
             
             requestImage(with: asset, cropRect: cropRect) { asset, result in
                 
                 images.append(result)
-                
-                if asset == self.albumView.selectedAssets.last {
+                index += 1
+                if index == selectedAssetsCount {
                     
-                    self.dismiss(animated: true) {
-                     
+                    if self.shouldDismissOnSelectAutomatically {
+                        self.dismiss(animated: true) {
+                            if let _ = self.delegate?.fusumaMultipleImageSelected {
+                                self.delegate?.fusumaMultipleImageSelected(images, source: self.mode)
+                            }
+                        }
+                    } else {
                         if let _ = self.delegate?.fusumaMultipleImageSelected {
-                        
                             self.delegate?.fusumaMultipleImageSelected(images, source: self.mode)
                         }
+                        
                     }
+                    
+                    
                 }
             }
         }
