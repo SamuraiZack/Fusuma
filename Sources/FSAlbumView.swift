@@ -15,6 +15,7 @@ import Photos
     
     func albumViewCameraRollUnauthorized()
     func albumViewCameraRollAuthorized()
+    func showMaximumSelectedPhotoAlert()
 }
 
 public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, PHPhotoLibraryChangeObserver, UIGestureRecognizerDelegate {
@@ -38,6 +39,7 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
     
     var selectedImages: [UIImage] = []
     var selectedAssets: [PHAsset] = []
+    var maximumMultipleSelectionCount = 10
     
     // Variables for calculating the position
     enum Direction {
@@ -306,6 +308,15 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
         
         let width = (collectionView.frame.width - 3) / 4
         return CGSize(width: width, height: width)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if selectedAssets.count >= maximumMultipleSelectionCount {
+            delegate?.showMaximumSelectedPhotoAlert()
+            return false
+        }
+        
+        return true
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

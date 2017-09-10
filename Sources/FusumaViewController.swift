@@ -136,6 +136,7 @@ public struct ImageMetadata {
     }
     
     public weak var delegate: FusumaDelegate? = nil
+    var maximumMultipleSelectionCount = 10
     
     override public func loadView() {
         
@@ -153,7 +154,7 @@ public struct ImageMetadata {
         cameraView.delegate = self
         albumView.delegate  = self
         videoView.delegate  = self
-        
+        albumView.maximumMultipleSelectionCount = maximumMultipleSelectionCount
         menuView.backgroundColor = fusumaBackgroundColor
         menuView.addBottomBorder(UIColor.black, width: 1.0)
         
@@ -515,6 +516,12 @@ extension FusumaViewController: FSAlbumViewDelegate, FSCameraViewDelegate, FSVid
         self.dismiss(animated: true, completion: nil)
     }
     
+    public func showMaximumSelectedPhotoAlert() {
+        let alertController = UIAlertController(title: "", message: "You can only select 10 images to upload at once.", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: .cancel)
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 private extension FusumaViewController {
