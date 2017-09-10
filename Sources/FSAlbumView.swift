@@ -57,6 +57,8 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
     private var dragStartPos: CGPoint = CGPoint.zero
     private let dragDiff: CGFloat     = 20.0
     
+    var cropRectDict = [PHAsset:CGRect]()
+    
     static func instance() -> FSAlbumView {
         
         return UINib(nibName: "FSAlbumView", bundle: Bundle(for: self.classForCoder())).instantiate(withOwner: self, options: nil)[0] as! FSAlbumView
@@ -130,6 +132,13 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        if let gestureView = gestureRecognizer.view, let otherGestureView = otherGestureRecognizer.view {
+            print(gestureView)
+            if gestureView == imageCropView || otherGestureView == imageCropView {
+                return false
+            }
+        }
         
         return true
     }
@@ -300,6 +309,18 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let view = imageCropView!
+        
+        let normalizedX = view.contentOffset.x / view.contentSize.width
+        let normalizedY = view.contentOffset.y / view.contentSize.height
+        
+        let normalizedWidth  = view.frame.width / view.contentSize.width
+        let normalizedHeight = view.frame.height / view.contentSize.height
+        
+        let cropRect = CGRect(x: normalizedX, y: normalizedY,
+                              width: normalizedWidth, height: normalizedHeight)
+        
+        cropRectDict[phAsset] = cropRect
         
         changeImage(images[(indexPath as NSIndexPath).row])
         
@@ -327,6 +348,7 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
         let selectedAsset = selectedAssets.enumerated().filter ({ $1 == asset }).first
         
         if let selected = selectedAsset {
+            cropRectDict.removeValue(forKey: selected.element)
             
             selectedImages.remove(at: selected.offset)
             selectedAssets.remove(at: selected.offset)
@@ -612,4 +634,3 @@ private extension FSAlbumView {
         return assets
     }
 }
-

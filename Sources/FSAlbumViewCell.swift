@@ -17,7 +17,7 @@ final class FSAlbumViewCell: UICollectionViewCell {
         
         didSet {
             
-            self.imageView.image = image            
+            self.imageView.image = image
         }
     }
     
@@ -25,14 +25,16 @@ final class FSAlbumViewCell: UICollectionViewCell {
         
         super.awakeFromNib()
         self.isSelected = false
+        self.backgroundColor = UIColor.white
     }
     
     override var isSelected : Bool {
         
         didSet {
-        
             self.layer.borderColor = isSelected ? fusumaTintColor.cgColor : UIColor.clear.cgColor
-            self.layer.borderWidth = isSelected ? 2 : 0
+            self.layer.borderWidth = isSelected ? 4 : 0
+            self.imageView.layer.opacity = isSelected ? 0.3 : 1
         }
+        
     }
 }
