@@ -25,6 +25,7 @@
                 <outlet property="menuView" destination="8ba-kc-jlJ" id="Gcf-Em-wAP"/>
                 <outlet property="photoLibraryViewerContainer" destination="1Pk-29-mUG" id="buU-Cs-7qz"/>
                 <outlet property="titleLabel" destination="cxN-Q8-Lgd" id="lSA-JT-Mpg"/>
+                <outlet property="topSafeAreaMenuView" destination="cHx-1d-gWl" id="ElE-ZO-1bO"/>
                 <outlet property="videoButton" destination="8ew-Zi-63G" id="PFn-Tm-KwS"/>
                 <outlet property="videoShotContainer" destination="RIt-Tt-mDz" id="vOH-eo-bHH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="cGt-bX-D2t"/>
@@ -48,10 +49,10 @@
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHx-1d-gWl">
-                    <rect key="frame" x="0.0" y="-30" width="414" height="50"/>
+                    <rect key="frame" x="0.0" y="-80" width="414" height="100"/>
                     <color key="backgroundColor" red="0.2317673713" green="0.23878552019999999" blue="0.26677399870000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="7on-HN-xMf"/>
+                        <constraint firstAttribute="height" constant="100" id="7on-HN-xMf"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ba-kc-jlJ" userLabel="Menu View">
@@ -154,7 +155,6 @@
                 <constraint firstAttribute="trailing" secondItem="cHx-1d-gWl" secondAttribute="trailing" id="9ad-6g-cLF"/>
                 <constraint firstItem="8ba-kc-jlJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ADX-qy-sfu"/>
                 <constraint firstItem="tfu-h9-cgX" firstAttribute="top" secondItem="8ba-kc-jlJ" secondAttribute="top" id="AuA-ay-hv8"/>
-                <constraint firstAttribute="bottom" secondItem="sCN-QB-mCu" secondAttribute="bottom" id="Eol-81-9UT"/>
                 <constraint firstItem="sCN-QB-mCu" firstAttribute="top" secondItem="cph-QM-jcJ" secondAttribute="top" id="K1G-U0-Vgk"/>
                 <constraint firstItem="CFH-FU-LPW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QcH-4o-bGU"/>
                 <constraint firstItem="sCN-QB-mCu" firstAttribute="top" secondItem="8ew-Zi-63G" secondAttribute="top" id="TRC-fO-jAk"/>
@@ -167,6 +167,7 @@
                 <constraint firstItem="CFH-FU-LPW" firstAttribute="trailing" secondItem="1Pk-29-mUG" secondAttribute="trailing" id="dTI-0B-myd"/>
                 <constraint firstItem="RIt-Tt-mDz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gTV-NE-IMv"/>
                 <constraint firstItem="1Pk-29-mUG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gbM-f6-jpP"/>
+                <constraint firstItem="sCN-QB-mCu" firstAttribute="bottom" secondItem="tfu-h9-cgX" secondAttribute="bottom" id="h7a-aM-8sN"/>
                 <constraint firstItem="8ew-Zi-63G" firstAttribute="leading" secondItem="sCN-QB-mCu" secondAttribute="trailing" id="lX7-Hu-YUi"/>
                 <constraint firstItem="cph-QM-jcJ" firstAttribute="bottom" secondItem="tfu-h9-cgX" secondAttribute="bottom" id="ns6-Wg-sKj"/>
                 <constraint firstItem="cph-QM-jcJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="r6i-pH-gQl"/>

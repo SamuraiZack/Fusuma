@@ -122,6 +122,7 @@ public struct ImageMetadata {
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var topSafeAreaMenuView: UIView!
     
     @IBOutlet var libraryFirstConstraints: [NSLayoutConstraint]!
     @IBOutlet var cameraFirstConstraints: [NSLayoutConstraint]!
@@ -156,6 +157,7 @@ public struct ImageMetadata {
         videoView.delegate  = self
         albumView.maximumMultipleSelectionCount = maximumMultipleSelectionCount
         menuView.backgroundColor = fusumaBackgroundColor
+        topSafeAreaMenuView.backgroundColor = fusumaBackgroundColor
         menuView.addBottomBorder(UIColor.black, width: 1.0)
         
         albumView.allowMultipleSelection = allowMultipleSelection
@@ -589,6 +591,7 @@ private extension FusumaViewController {
         }
         
         self.view.bringSubview(toFront: menuView)
+        self.view.bringSubview(toFront: topSafeAreaMenuView)
     }
     
     func updateDoneButtonVisibility() {
