@@ -27,6 +27,7 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
     @IBOutlet weak var collectionViewConstraintHeight: NSLayoutConstraint!
     @IBOutlet weak var imageCropViewConstraintTop: NSLayoutConstraint!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     weak var delegate: FSAlbumViewDelegate? = nil
     var allowMultipleSelection = false
     
@@ -40,7 +41,7 @@ public final class FSAlbumView: UIView, UICollectionViewDataSource, UICollection
     var selectedImages: [UIImage] = []
     var selectedAssets: [PHAsset] = []
     var maximumMultipleSelectionCount = 10
-    
+    var numberOfImagesLoading = 0
     // Variables for calculating the position
     enum Direction {
         case scroll
@@ -468,36 +469,87 @@ internal extension IndexSet {
 private extension FSAlbumView {
     
     func changeImage(_ asset: PHAsset) {
-        
-        self.imageCropView.image = nil
-        self.phAsset = asset
-        
-        DispatchQueue.global(qos: .default).async(execute: {
+        DispatchQueue.main.async(execute: {
+            self.numberOfImagesLoading += 1
+
+            self.imageCropView.image = nil
+            self.phAsset = asset
+            var targetWidth : CGFloat = 0
+            var targetHeight : CGFloat = 0
             
-            let options = PHImageRequestOptions()
-            options.isNetworkAccessAllowed = true
+//            targetWidth = CGFloat(asset.pixelWidth)
+//            targetHeight = CGFloat(asset.pixelHeight)
+            targetWidth = self.imageCropView.frame.width * UIScreen.main.scale
+            targetHeight = self.imageCropView.frame.height * UIScreen.main.scale
+            let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
+            targetWidth = targetHeight * assetRatio
+            targetHeight = targetWidth / assetRatio
+//
+            print("Target Width")
+            print(targetWidth)
+            print("Target Height")
+            print(targetHeight)
             
-            self.imageManager?.requestImage(for: asset,
-                                            targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
-                                            contentMode: .aspectFill,
-                                            options: options) {
-                                                result, info in
-                                                
-                                                DispatchQueue.main.async(execute: {
-                                                    
-                                                    self.imageCropView.imageSize = CGSize(width: asset.pixelWidth,
-                                                                                          height: asset.pixelHeight)
-                                                    self.imageCropView.image = result
-                                                    
-                                                    if let result = result,
-                                                        !self.selectedAssets.contains(asset) {
+            DispatchQueue.global(qos: .default).async(execute: {
+                
+                let options = PHImageRequestOptions()
+                options.isNetworkAccessAllowed = true
+                options.version = .current
+                options.deliveryMode = PHImageRequestOptionsDeliveryMode.opportunistic
+                options.resizeMode = PHImageRequestOptionsResizeMode.exact
+                print("Width")
+                print(asset.pixelWidth)
+                print("Height")
+                print(asset.pixelHeight)
+                options.progressHandler = {  (progress, error, stop, info) in
+                    DispatchQueue.main.async(execute: {
+                        if !self.activityIndicator.isAnimating {
+                            self.activityIndicator.startAnimating()
+                        }
+                        if progress == 1.0 {
+                            self.numberOfImagesLoading -= 1
+                            if self.numberOfImagesLoading <= 0 {
+                                self.activityIndicator.stopAnimating()
+                            }
+                        }
+                        print("progress: \(progress)")
+                    })
+                }
+                
+                self.imageManager?.requestImage(for: asset,
+                                                targetSize: CGSize(width: targetWidth, height: targetHeight),
+                                                contentMode: .aspectFill,
+                                                options: options) {
+                                                    result, info in
+                                                    DispatchQueue.main.async(execute: {
+                                                        self.imageCropView.imageSize = CGSize(width: asset.pixelWidth,
+                                                                                              height: asset.pixelHeight)
+                                                        self.imageCropView.image = result
                                                         
-                                                        self.selectedAssets.append(asset)
-                                                        self.selectedImages.append(result)
-                                                    }
-                                                })
-            }
+                                                        if let result = result {
+                                                            if let index = self.selectedAssets.index(of: asset) {
+                                                                self.selectedAssets.remove(at: index)
+                                                                self.selectedImages.remove(at: index)
+                                                            }
+                                                            
+                                                            self.selectedAssets.append(asset)
+                                                            self.selectedImages.append(result)
+                                                        }
+                                                    })
+                }
+            })
         })
+
+//        var minimumRatio : CGFloat = 1
+//        if(CGFloat(asset.pixelWidth) > targetWidth || CGFloat(asset.pixelHeight) > targetHeight)
+//        {
+//            minimumRatio = min(targetWidth/(CGFloat(asset.pixelWidth)), targetHeight/CGFloat(asset.pixelHeight))
+//        }
+//        targetWidth = minimumRatio * CGFloat(asset.pixelWidth)
+//        targetHeight = minimumRatio * CGFloat(asset.pixelHeight)
+        //CGSize(width: self.imageCropView.frame.width, height: self.imageCropView.frame.height)
+        
+    
     }
     
     // Check the status of authorization for PHPhotoLibrary
@@ -514,6 +566,22 @@ private extension FSAlbumView {
                 if let images = self.images, images.count > 0 {
                     
                     self.changeImage(images[0])
+                } else {
+                    let options = PHFetchOptions()
+                    options.sortDescriptors = [
+                        NSSortDescriptor(key: "creationDate", ascending: false)
+                    ]
+                    
+                    self.images = PHAsset.fetchAssets(with: .image, options: options)
+                    
+                    if self.images.count > 0 {
+                        
+                        self.changeImage(self.images[0])
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                            self.collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition())
+                        }
+                    }
                 }
                 
                 DispatchQueue.main.async {
