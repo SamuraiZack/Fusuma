@@ -17,6 +17,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FusumaViewController" customModule="Fusuma" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="PI1-0J-IQf" id="yJd-Ft-Hg5"/>
                 <outlet property="cameraButton" destination="sCN-QB-mCu" id="tC3-i4-xpG"/>
                 <outlet property="cameraShotContainer" destination="CFH-FU-LPW" id="gvI-wh-cln"/>
                 <outlet property="closeButton" destination="Dx0-Tt-oZs" id="ci8-ub-48f"/>
@@ -86,6 +87,9 @@
                                 <action selector="doneButtonPressed:" destination="-1" eventType="touchUpInside" id="Ym5-Qc-exH"/>
                             </connections>
                         </button>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PI1-0J-IQf">
+                            <rect key="frame" x="329" y="2" width="37" height="37"/>
+                        </activityIndicatorView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAMERA ROLL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxN-Q8-Lgd">
                             <rect key="frame" x="56" y="0.0" width="263" height="44"/>
                             <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
@@ -97,10 +101,12 @@
                     <constraints>
                         <constraint firstItem="Dx0-Tt-oZs" firstAttribute="leading" secondItem="8ba-kc-jlJ" secondAttribute="leading" constant="8" id="51K-wb-k3T"/>
                         <constraint firstAttribute="height" constant="44" id="5ZE-04-Fz1"/>
+                        <constraint firstItem="PI1-0J-IQf" firstAttribute="centerX" secondItem="5iB-Jh-kTh" secondAttribute="centerX" id="5pA-yV-SqY"/>
                         <constraint firstAttribute="bottom" secondItem="cxN-Q8-Lgd" secondAttribute="bottom" id="CHC-Sa-Gba"/>
                         <constraint firstAttribute="trailing" secondItem="5iB-Jh-kTh" secondAttribute="trailing" constant="8" id="CsQ-ni-3OY"/>
                         <constraint firstItem="cxN-Q8-Lgd" firstAttribute="leading" secondItem="Dx0-Tt-oZs" secondAttribute="trailing" constant="8" id="INH-fO-tBz"/>
                         <constraint firstItem="5iB-Jh-kTh" firstAttribute="leading" secondItem="cxN-Q8-Lgd" secondAttribute="trailing" constant="8" id="InH-Sz-8gz"/>
+                        <constraint firstItem="PI1-0J-IQf" firstAttribute="centerY" secondItem="5iB-Jh-kTh" secondAttribute="centerY" id="Xkl-r3-4pc"/>
                         <constraint firstItem="5iB-Jh-kTh" firstAttribute="top" secondItem="8ba-kc-jlJ" secondAttribute="top" id="dqA-0U-VSM"/>
                         <constraint firstItem="Dx0-Tt-oZs" firstAttribute="top" secondItem="8ba-kc-jlJ" secondAttribute="top" id="phx-7N-5Ks"/>
                         <constraint firstItem="cxN-Q8-Lgd" firstAttribute="top" secondItem="8ba-kc-jlJ" secondAttribute="top" id="ulg-hk-mk8"/>

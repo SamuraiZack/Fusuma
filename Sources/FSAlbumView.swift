@@ -470,8 +470,6 @@ private extension FSAlbumView {
     
     func changeImage(_ asset: PHAsset) {
         DispatchQueue.main.async(execute: {
-            self.numberOfImagesLoading += 1
-
             self.imageCropView.image = nil
             self.phAsset = asset
             var targetWidth : CGFloat = 0
@@ -479,8 +477,8 @@ private extension FSAlbumView {
             
 //            targetWidth = CGFloat(asset.pixelWidth)
 //            targetHeight = CGFloat(asset.pixelHeight)
-            targetWidth = self.imageCropView.frame.width * UIScreen.main.scale
-            targetHeight = self.imageCropView.frame.height * UIScreen.main.scale
+            targetWidth = self.imageCropView.frame.width * 1.5
+            targetHeight = self.imageCropView.frame.height * 1.5
             let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
             targetWidth = targetHeight * assetRatio
             targetHeight = targetWidth / assetRatio
@@ -489,6 +487,10 @@ private extension FSAlbumView {
             print(targetWidth)
             print("Target Height")
             print(targetHeight)
+            print("Width")
+            print(asset.pixelWidth)
+            print("Height")
+            print(asset.pixelHeight)
             
             DispatchQueue.global(qos: .default).async(execute: {
                 
@@ -497,22 +499,16 @@ private extension FSAlbumView {
                 options.version = .current
                 options.deliveryMode = PHImageRequestOptionsDeliveryMode.opportunistic
                 options.resizeMode = PHImageRequestOptionsResizeMode.exact
-                print("Width")
-                print(asset.pixelWidth)
-                print("Height")
-                print(asset.pixelHeight)
                 options.progressHandler = {  (progress, error, stop, info) in
                     DispatchQueue.main.async(execute: {
                         if !self.activityIndicator.isAnimating {
                             self.activityIndicator.startAnimating()
                         }
+                        
                         if progress == 1.0 {
-                            self.numberOfImagesLoading -= 1
-                            if self.numberOfImagesLoading <= 0 {
-                                self.activityIndicator.stopAnimating()
-                            }
+                            self.activityIndicator.stopAnimating()
                         }
-                        print("progress: \(progress)")
+//                        print("progress: \(progress)")
                     })
                 }
                 
@@ -522,17 +518,17 @@ private extension FSAlbumView {
                                                 options: options) {
                                                     result, info in
                                                     DispatchQueue.main.async(execute: {
-                                                        self.imageCropView.imageSize = CGSize(width: asset.pixelWidth,
-                                                                                              height: asset.pixelHeight)
+                                                        self.imageCropView.imageSize = CGSize(width: targetWidth,
+                                                                                              height: targetHeight)
                                                         self.imageCropView.image = result
                                                         
                                                         if let result = result {
                                                             if let index = self.selectedAssets.index(of: asset) {
-                                                                self.selectedAssets.remove(at: index)
                                                                 self.selectedImages.remove(at: index)
+                                                            } else {
+                                                                self.selectedAssets.append(asset)
                                                             }
                                                             
-                                                            self.selectedAssets.append(asset)
                                                             self.selectedImages.append(result)
                                                         }
                                                     })

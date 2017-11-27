@@ -124,6 +124,7 @@ public struct ImageMetadata {
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var topSafeAreaMenuView: UIView!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var libraryFirstConstraints: [NSLayoutConstraint]!
     @IBOutlet var cameraFirstConstraints: [NSLayoutConstraint]!
     
@@ -414,11 +415,17 @@ public struct ImageMetadata {
             
             let targetWidth  = floor(CGFloat(asset.pixelWidth) * cropRect.width)
             let targetHeight = floor(CGFloat(asset.pixelHeight) * cropRect.height)
-            let dimensionW   = max(min(targetHeight, targetWidth), 1024 * UIScreen.main.scale)
+            let dimensionW   = min(min(targetHeight, targetWidth), self.albumView.imageCropView.frame.size.width * 1.5)
             let dimensionH   = dimensionW * self.getCropHeightRatio()
             
             let targetSize   = CGSize(width: dimensionW, height: dimensionH)
-            
+//            print(cropRect.width)
+//            options.progressHandler = {  (progress, error, stop, info) in
+//                DispatchQueue.main.async(execute: {
+//                    print("progress: \(progress)")
+//                })
+//            }
+//            
             PHImageManager.default().requestImage(
                 for: asset, targetSize: targetSize,
                 contentMode: .aspectFill, options: options) { result, info in
@@ -454,12 +461,15 @@ public struct ImageMetadata {
                                   width: normalizedWidth, height: normalizedHeight)
             }
             
+            doneButton.isHidden = true
+            activityIndicator.startAnimating()
+            
             requestImage(with: asset, cropRect: cropRect!) { asset, result in
                 
                 images.append(result)
                 index += 1
                 if index == selectedAssetsCount {
-                    
+                    self.activityIndicator.stopAnimating()
                     if self.shouldDismissOnSelectAutomatically {
                         self.dismiss(animated: true) {
                             if let _ = self.delegate?.fusumaMultipleImageSelected {
@@ -470,10 +480,7 @@ public struct ImageMetadata {
                         if let _ = self.delegate?.fusumaMultipleImageSelected {
                             self.delegate?.fusumaMultipleImageSelected(images, source: self.mode)
                         }
-                        
                     }
-                    
-                    
                 }
             }
         }
