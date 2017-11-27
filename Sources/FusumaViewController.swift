@@ -415,7 +415,7 @@ public struct ImageMetadata {
             
             let targetWidth  = floor(CGFloat(asset.pixelWidth) * cropRect.width)
             let targetHeight = floor(CGFloat(asset.pixelHeight) * cropRect.height)
-            let dimensionW   = min(min(targetHeight, targetWidth), self.albumView.imageCropView.frame.size.width * 1.5)
+            let dimensionW   = min(min(targetHeight, targetWidth), 1500)
             let dimensionH   = dimensionW * self.getCropHeightRatio()
             
             let targetSize   = CGSize(width: dimensionW, height: dimensionH)

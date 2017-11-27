@@ -483,14 +483,14 @@ private extension FSAlbumView {
             targetWidth = targetHeight * assetRatio
             targetHeight = targetWidth / assetRatio
 //
-            print("Target Width")
-            print(targetWidth)
-            print("Target Height")
-            print(targetHeight)
-            print("Width")
-            print(asset.pixelWidth)
-            print("Height")
-            print(asset.pixelHeight)
+//            print("Target Width")
+//            print(targetWidth)
+//            print("Target Height")
+//            print(targetHeight)
+//            print("Width")
+//            print(asset.pixelWidth)
+//            print("Height")
+//            print(asset.pixelHeight)
             
             DispatchQueue.global(qos: .default).async(execute: {
                 
