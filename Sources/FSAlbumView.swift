@@ -475,22 +475,22 @@ private extension FSAlbumView {
             var targetWidth : CGFloat = 0
             var targetHeight : CGFloat = 0
             
-//            targetWidth = CGFloat(asset.pixelWidth)
-//            targetHeight = CGFloat(asset.pixelHeight)
-            targetWidth = self.imageCropView.frame.width * 1.5
-            targetHeight = self.imageCropView.frame.height * 1.5
-            let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
-            targetWidth = targetHeight * assetRatio
-            targetHeight = targetWidth / assetRatio
-//
-//            print("Target Width")
-//            print(targetWidth)
-//            print("Target Height")
-//            print(targetHeight)
-//            print("Width")
-//            print(asset.pixelWidth)
-//            print("Height")
-//            print(asset.pixelHeight)
+            targetWidth = CGFloat(asset.pixelWidth)
+            targetHeight = CGFloat(asset.pixelHeight)
+            //            targetWidth = self.imageCropView.frame.width * 1.5
+            //            targetHeight = self.imageCropView.frame.height * 1.5
+            //            let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
+            //            targetWidth = targetHeight * assetRatio
+            //            targetHeight = targetWidth / assetRatio
+            //
+            //            print("Target Width")
+            //            print(targetWidth)
+            //            print("Target Height")
+            //            print(targetHeight)
+            //            print("Width")
+            //            print(asset.pixelWidth)
+            //            print("Height")
+            //            print(asset.pixelHeight)
             
             DispatchQueue.global(qos: .default).async(execute: {
                 
@@ -508,7 +508,7 @@ private extension FSAlbumView {
                         if progress == 1.0 {
                             self.activityIndicator.stopAnimating()
                         }
-//                        print("progress: \(progress)")
+                        //                        print("progress: \(progress)")
                     })
                 }
                 
@@ -518,9 +518,11 @@ private extension FSAlbumView {
                                                 options: options) {
                                                     result, info in
                                                     DispatchQueue.main.async(execute: {
-                                                        self.imageCropView.imageSize = CGSize(width: targetWidth,
-                                                                                              height: targetHeight)
-                                                        self.imageCropView.image = result
+                                                        if self.phAsset == asset {
+                                                            self.imageCropView.imageSize = CGSize(width: targetWidth,
+                                                                                                  height: targetHeight)
+                                                            self.imageCropView.image = result
+                                                        }
                                                         
                                                         if let result = result {
                                                             if let index = self.selectedAssets.index(of: asset) {
@@ -535,17 +537,17 @@ private extension FSAlbumView {
                 }
             })
         })
-
-//        var minimumRatio : CGFloat = 1
-//        if(CGFloat(asset.pixelWidth) > targetWidth || CGFloat(asset.pixelHeight) > targetHeight)
-//        {
-//            minimumRatio = min(targetWidth/(CGFloat(asset.pixelWidth)), targetHeight/CGFloat(asset.pixelHeight))
-//        }
-//        targetWidth = minimumRatio * CGFloat(asset.pixelWidth)
-//        targetHeight = minimumRatio * CGFloat(asset.pixelHeight)
+        
+        //        var minimumRatio : CGFloat = 1
+        //        if(CGFloat(asset.pixelWidth) > targetWidth || CGFloat(asset.pixelHeight) > targetHeight)
+        //        {
+        //            minimumRatio = min(targetWidth/(CGFloat(asset.pixelWidth)), targetHeight/CGFloat(asset.pixelHeight))
+        //        }
+        //        targetWidth = minimumRatio * CGFloat(asset.pixelWidth)
+        //        targetHeight = minimumRatio * CGFloat(asset.pixelHeight)
         //CGSize(width: self.imageCropView.frame.width, height: self.imageCropView.frame.height)
         
-    
+        
     }
     
     // Check the status of authorization for PHPhotoLibrary

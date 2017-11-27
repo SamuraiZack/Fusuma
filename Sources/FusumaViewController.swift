@@ -415,17 +415,17 @@ public struct ImageMetadata {
             
             let targetWidth  = floor(CGFloat(asset.pixelWidth) * cropRect.width)
             let targetHeight = floor(CGFloat(asset.pixelHeight) * cropRect.height)
-            let dimensionW   = min(min(targetHeight, targetWidth), 1500)
+            let dimensionW   = max(min(targetHeight, targetWidth), 1024 * UIScreen.main.scale)
             let dimensionH   = dimensionW * self.getCropHeightRatio()
             
             let targetSize   = CGSize(width: dimensionW, height: dimensionH)
-//            print(cropRect.width)
-//            options.progressHandler = {  (progress, error, stop, info) in
-//                DispatchQueue.main.async(execute: {
-//                    print("progress: \(progress)")
-//                })
-//            }
-//            
+            //            print(cropRect.width)
+            //            options.progressHandler = {  (progress, error, stop, info) in
+            //                DispatchQueue.main.async(execute: {
+            //                    print("progress: \(progress)")
+            //                })
+            //            }
+            //
             PHImageManager.default().requestImage(
                 for: asset, targetSize: targetSize,
                 contentMode: .aspectFill, options: options) { result, info in
