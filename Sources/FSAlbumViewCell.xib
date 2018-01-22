@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,18 +20,31 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eyB-Pn-Cz7">
                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_unselected" translatesAutoresizingMaskIntoConstraints="NO" id="ddS-ET-HcJ">
+                        <rect key="frame" x="28" y="28" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="48s-Uy-nFZ"/>
+                            <constraint firstAttribute="width" constant="15" id="Obn-EV-Fq6"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="ddS-ET-HcJ" secondAttribute="bottom" constant="7" id="5YR-4K-kml"/>
                 <constraint firstAttribute="bottom" secondItem="eyB-Pn-Cz7" secondAttribute="bottom" id="7nt-Ev-pzc"/>
+                <constraint firstAttribute="trailing" secondItem="ddS-ET-HcJ" secondAttribute="trailing" constant="7" id="STS-Lt-2bi"/>
                 <constraint firstItem="eyB-Pn-Cz7" firstAttribute="leading" secondItem="xyV-m5-VJN" secondAttribute="leading" id="Tri-pb-OD8"/>
                 <constraint firstAttribute="trailing" secondItem="eyB-Pn-Cz7" secondAttribute="trailing" id="hLc-zq-PCS"/>
                 <constraint firstItem="eyB-Pn-Cz7" firstAttribute="top" secondItem="xyV-m5-VJN" secondAttribute="top" id="unD-44-W5K"/>
             </constraints>
             <connections>
                 <outlet property="imageView" destination="eyB-Pn-Cz7" id="OJW-qf-zy1"/>
+                <outlet property="selectedUnselectedIcon" destination="ddS-ET-HcJ" id="KaK-F4-zFi"/>
             </connections>
             <point key="canvasLocation" x="252" y="306"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="ic_unselected" width="17" height="17"/>
+    </resources>
 </document>

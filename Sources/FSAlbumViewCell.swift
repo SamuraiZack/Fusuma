@@ -12,6 +12,7 @@ import Photos
 final class FSAlbumViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var selectedUnselectedIcon: UIImageView!
     
     var image: UIImage? {
         
@@ -32,8 +33,9 @@ final class FSAlbumViewCell: UICollectionViewCell {
         
         didSet {
             self.layer.borderColor = isSelected ? fusumaTintColor.cgColor : UIColor.clear.cgColor
-            self.layer.borderWidth = isSelected ? 4 : 0
-            self.imageView.layer.opacity = isSelected ? 0.3 : 1
+            self.layer.borderWidth = isSelected ? 3 : 0
+            self.imageView.layer.opacity = isSelected ? 0.25 : 1
+            self.selectedUnselectedIcon.image = isSelected ? UIImage(named: "ic_selected") : UIImage(named: "ic_unselected") 
         }
         
     }
